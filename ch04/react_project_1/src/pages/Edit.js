@@ -1,30 +1,36 @@
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { DiaryStateContext } from '../App';
+import DiaryEditor from '../components/DiaryEditor';
 
 const Edit = () => {
-  //리엑트에서 페이지를 이동시킬때 사용 (useNavigate 사용)
+  const [originData, setOriginData] = useState();
   const navigate = useNavigate();
+  //pathVariable 받기
+  const { id } = useParams();
+  const dirayList = useContext(DiaryStateContext);
 
-  //Query String 받기 (useSearchParams 사용)
-  //searchParams : 현재의 QueryString 얻기
-  //setSearchParams : 실시간으로 QueryString 상태 변경
-  const [searchParams, setSearchParams] = useSearchParams();
+  //id, dirayList가 변할때 실행
+  useEffect(() => {
+    if (dirayList.length >= 1) {
+      const targetDiary = dirayList.find(
+        (it) => parseInt(it.id) === parseInt(id)
+      );
+      console.log(targetDiary);
 
-  //id 추출
-  const id = searchParams.get('id');
-  console.log('id:', id);
+      //해당 id의 수정페이지 있을때
+      if (targetDiary) {
+        setOriginData(targetDiary);
+      } else {
+        //해당 id 상세보기가 없을때 홈으로 이동
+        navigate('/', { replace: true });
+      }
+    }
+  }, [id, dirayList]);
 
-  //mode 추출
-  const mode = searchParams.get('mode');
-  console.log('mode:', mode);
   return (
     <div>
-      <h1>Edit</h1>
-      <p>이곳은 일기 수정 페이지 입니다</p>
-      <button onClick={() => setSearchParams({ who: 'winterlood' })}>
-        QS 바꾸기
-      </button>
-      <button onClick={() => navigate('/')}>홈으로가기</button>
-      <button onClick={() => navigate(-1)}>뒤로가기</button>
+      {originData && <DiaryEditor isEdit={true} originData={originData} />}
     </div>
   );
 };

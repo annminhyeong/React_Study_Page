@@ -15,7 +15,7 @@ const reducer = (state, action) => {
       return action.data;
     }
     case 'CREATE': {
-      newState = [action.data, ...state];
+      newState = [...state, action.data];
       break;
     }
     case 'REMOVE': {
@@ -24,7 +24,7 @@ const reducer = (state, action) => {
     }
     case 'EDIT': {
       newState = state.map((it) =>
-        it.id === action.targetId ? { ...action.data } : it
+        it.id === action.data.id ? action.data : it
       );
       break;
     }
@@ -70,6 +70,7 @@ function App() {
 
   //EDIT
   const onEdit = (targetId, date, content, emotion) => {
+    console.log(targetId, '아이디 받음?');
     dispatch({
       type: 'EDIT',
       data: {
@@ -91,7 +92,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/new' element={<New />} />
-              <Route path='/edit' element={<Edit />} />
+              <Route path='/edit/:id' element={<Edit />} />
               <Route path='/diary/:id' element={<Diary />} />
             </Routes>
           </div>
