@@ -22,6 +22,7 @@ const Edit = () => {
       if (targetDiary) {
         setOriginData(targetDiary);
       } else {
+        alert('없는 일기입니다.');
         //해당 id 상세보기가 없을때 홈으로 이동
         navigate('/', { replace: true });
       }
