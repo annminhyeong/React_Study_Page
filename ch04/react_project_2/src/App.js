@@ -32,7 +32,7 @@ const reducer = (state, action) => {
       return state;
   }
   //localStorage
-  //localStorage에 저장할때는 setItem, 가져올때는 getItem
+  //localStorage에 저장할때는 setItem, 가져올때는 getItem, 없앨때는 removeItem
   //객체, 배열를 저장할때는 json으로 변환해야함, 객체, 배열를 가져올때는 객체로 변환해야함
   //localStorage에서 모든 요소는 문자열로 변환되서 얻어짐
   localStorage.setItem('diary', JSON.stringify(newState));
@@ -55,8 +55,10 @@ function App() {
       const diaryList = JSON.parse(localData).sort(
         (a, b) => parseInt(b.id) - parseInt(a.id)
       );
-      dataId.current = parseInt(diaryList[0].id) + 1;
-      dispatch({ type: 'INIT', data: diaryList });
+      if (diaryList.length >= 1) {
+        dataId.current = parseInt(diaryList[0].id) + 1;
+        dispatch({ type: 'INIT', data: diaryList });
+      }
     }
   }, []);
 

@@ -11,6 +11,12 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [curDate, setCurDate] = useState(new Date());
 
+  //타이틀 바꾸기 (Mount)
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName('title')[0];
+    titleElement.innerHTML = `감정일기장`;
+  }, []);
+
   useEffect(() => {
     if (diaryList.length >= 1) {
       //현재 월의 첫번째 날

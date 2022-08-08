@@ -12,8 +12,13 @@ const Diary = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const diaryList = useContext(DiaryStateContext);
-
   const [data, setData] = useState();
+
+  //타이틀 바꾸기 (Mount)
+  useEffect(() => {
+    const titleElement = document.getElementsByTagName('title')[0];
+    titleElement.innerHTML = `감정일기장 - ${id}번 일기`;
+  }, []);
 
   //상세페이지에 들어왔을때
   useEffect(() => {
